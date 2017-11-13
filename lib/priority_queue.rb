@@ -18,15 +18,19 @@ class PriorityQueue
     @nodes.size == @capacity
   end
 
+  def max_weight
+    @nodes.empty? ? 0 : @nodes.first.weight
+  end
+
   def add value
     return if @capacity == 0 # Edge case sanity check
 
     weight = @weight_function.call(value)
-    new_node = Node.new(weight, value) 
+    new_node = Node.new(weight, value)
 
     if !full?
       @nodes = PriorityQueue.insert new_node, @nodes
-    elsif weight < _max_weight
+    elsif weight < max_weight
       # The list is at capacity so drop the first and largest element
       @nodes.shift
       @nodes = PriorityQueue.insert new_node, @nodes
@@ -55,11 +59,5 @@ class PriorityQueue
     else
       insert(node, left) + right
     end
-  end
-
-  private
-
-  def _max_weight
-    @nodes.empty? ? 0 : @nodes.first.weight
   end
 end
