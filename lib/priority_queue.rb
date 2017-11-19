@@ -1,58 +1,29 @@
 
 class PriorityQueue
-  Node = Struct.new(:weight, :value)
-
-  # Enumeration for order of queue
-  ASCENDING = 0  # Lower weight = higher priority
-  DESCENDING = 1 # Higher weight = higher priority
-
-  def initialize k, order=ASCENDING, &weight_function
+  def initialize k, &cmp
     @capacity = k
-    @order = order
-    @weight_function = weight_function
-    @nodes = []
+    @cmp = cmp
+    @items = []
   end
 
-  attr_reader :capacity
-
-  def items
-    # List of nodes is kept in reverse order so that first node is always the limit weight
-    # Reverse order on output
-    @nodes.map(&:value).reverse
-  end
+  attr_reader :capacity, :items
 
   def full?
-    @nodes.size == @capacity
-  end
-
-  def asc?
-    @order == ASCENDING
-  end
-
-  def desc?
-    @order == DESCENDING
-  end
-
-  def limit_weight
-    @nodes.empty? ? 0 : @nodes.first.weight
+    @items.size == @capacity
   end
 
   def add value
     return if @capacity == 0 # Edge case sanity check
 
-    weight = @weight_function.call(value)
-    new_node = Node.new(weight, value)
-
     if !full?
-      @nodes = PriorityQueue.insert new_node, @nodes, @order
-    elsif (asc? && weight < limit_weight) || (desc? && weight > limit_weight)
-      # The list is at capacity so drop the first element and add new element
-      @nodes.shift
-      @nodes = PriorityQueue.insert new_node, @nodes, @order
+      @items = PriorityQueue.insert value, @items, @cmp
+    elsif @cmp.call(value, @items.last) < 0
+      # The list is at capacity so remove the last element and add new element
+      @items = PriorityQueue.insert value, @items.slice(0..-2), @cmp
     end
   end
 
-  def self.insert node, list, order
+  def self.insert node, list, cmp
     size = list.size
 
     return [node] if size == 0 # Edge case of empty list
@@ -62,18 +33,17 @@ class PriorityQueue
     left = list[0, size / 2]
     right = list[(size / 2)..-1]
 
-    if (order == ASCENDING && right.first.weight >= node.weight) ||
-        (order == DESCENDING && right.first.weight <= node.weight)
-      # Leaf case where there is only 1 element in the list
-      if right.size == 1
+    cmp_result = cmp.call(node, right.first)
+    if cmp_result > 0
+      if right.size == 1 # Leaf case where there is only 1 element in the list
         left + right + [node]
       else
-        left + insert(node, right, order)
+        left + insert(node, right, cmp)
       end
     elsif left.empty?
       [node] + right
     else
-      insert(node, left, order) + right
+      insert(node, left, cmp) + right
     end
   end
 end
