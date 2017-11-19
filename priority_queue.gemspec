@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name        = 'priority_queue'
-  s.version     = '0.0.2'
+  s.version     = '0.0.3'
   s.date        = '2017-11-12'
   s.summary     = "Implementation of a priority queue"
   s.description = "My own toy implementation of a priority queue"

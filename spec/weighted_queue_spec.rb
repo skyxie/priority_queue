@@ -28,8 +28,24 @@ RSpec.describe(WeightedQueue) do
       expect(queue.items).to eql([0, 1])
     end
 
+    it 'should indicate max weight' do
+      expect(queue.max_weight).to eql(1)
+    end
+
+    it 'should indicate min weight' do
+      expect(queue.min_weight).to eql(0)
+    end
+
     describe "when order is descending" do
       let(:order) { WeightedQueue::DESCENDING }
+
+      it 'should indicate max weight' do
+        expect(queue.max_weight).to eql(1)
+      end
+
+      it 'should indicate min weight' do
+        expect(queue.min_weight).to eql(0)
+      end
 
       it 'should have all values in order' do
         expect(queue.items).to eql([1, 0])
@@ -44,8 +60,24 @@ RSpec.describe(WeightedQueue) do
       expect(queue.items).to eql(values.sort.slice(0, capacity))
     end
 
+    it 'should indicate max weight' do
+      expect(queue.max_weight).to eql(4)
+    end
+
+    it 'should indicate min weight' do
+      expect(queue.min_weight).to eql(0)
+    end
+
     describe "when order is descending" do
       let(:order) { WeightedQueue::DESCENDING }
+
+      it 'should indicate max weight' do
+        expect(queue.max_weight).to eql(19)
+      end
+
+      it 'should indicate min weight' do
+        expect(queue.min_weight).to eql(8)
+      end
 
       it 'should have all values in order' do
         expect(queue.items).to eql(values.sort.reverse.slice(0, capacity))
