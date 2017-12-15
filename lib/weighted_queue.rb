@@ -23,6 +23,14 @@ class WeightedQueue < PriorityQueue
     super.map(&:value) # Extract values from nodes
   end
 
+  def first
+    @items.first.value
+  end
+
+  def last
+    @items.last.value
+  end
+
   def min_weight
     if @order == ASCENDING
       @items.first.weight

@@ -25,6 +25,8 @@ RSpec.describe(WeightedQueue) do
     let(:values) { [0, 1] }
 
     it 'should have all values in order' do
+      expect(queue.first).to eql(0)
+      expect(queue.last).to eql(1)
       expect(queue.items).to eql([0, 1])
     end
 
@@ -48,6 +50,8 @@ RSpec.describe(WeightedQueue) do
       end
 
       it 'should have all values in order' do
+        expect(queue.first).to eql(1)
+        expect(queue.last).to eql(0)
         expect(queue.items).to eql([1, 0])
       end
     end
