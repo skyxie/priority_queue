@@ -23,6 +23,14 @@ class WeightedQueue < PriorityQueue
     super.map(&:value) # Extract values from nodes
   end
 
+  def empty?
+    @items.empty?
+  end
+
+  def size
+    @items.size
+  end
+
   def first
     @items.first.value
   end
