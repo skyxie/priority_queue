@@ -50,12 +50,19 @@ class WeightedQueue < PriorityQueue
   end
 
   def remove value
-    @items = @items.reject { |n| n.value == value }
+    before = @items
+    after = before.reject { |n| n.value == value }
+    @items = after
+    before.size > after.size
   end
 
   def reweigh value
-    remove value
-    add value
+    if remove(value)
+      add(value)
+      true
+    else
+      false
+    end
   end
 
   def min_weight

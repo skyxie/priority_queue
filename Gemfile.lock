@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    priority_queue (0.0.5)
+    priority_queue (0.0.8)
 
 GEM
   remote: https://rubygems.org/

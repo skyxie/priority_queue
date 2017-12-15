@@ -53,12 +53,19 @@ RSpec.describe(WeightedQueue) do
       let(:weight_lookup) { { 'a' => 1, 'b' => 2, 'c' => 3 } }
       let(:weight_function) { -> (x) { weight_lookup[x] } }
 
+      it 'should remove nodes that exist' do
+        expect(queue.remove('a')).to be true
+        expect(queue.items).to eql(%w{b c})
+        expect(queue.remove('d')).to be false
+      end
+
       it 'should insert in order and require reweigh to change order' do
         expect(queue.items).to eql(%w{a b c})
         weight_lookup['a'] = 100
         expect(queue.items).to eql(%w{a b c})
-        queue.reweigh 'a'
+        expect(queue.reweigh('a')).to be true
         expect(queue.items).to eql(%w{b c a})
+        expect(queue.reweigh('d')).to be false
       end
     end
 
