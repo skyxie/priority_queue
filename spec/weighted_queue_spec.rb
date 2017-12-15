@@ -30,6 +30,16 @@ RSpec.describe(WeightedQueue) do
       expect(queue.items).to eql([0, 1])
     end
 
+    it 'should shift in front' do
+      expect(queue.shift).to eql(0)
+      expect(queue.shift).to eql(1)
+    end
+
+    it 'should pop in back' do
+      expect(queue.pop).to eql(1)
+      expect(queue.pop).to eql(0)
+    end
+
     it 'should indicate max weight' do
       expect(queue.max_weight).to eql(1)
     end
@@ -53,6 +63,16 @@ RSpec.describe(WeightedQueue) do
         expect(queue.first).to eql(1)
         expect(queue.last).to eql(0)
         expect(queue.items).to eql([1, 0])
+      end
+
+      it 'should shift in front' do
+        expect(queue.shift).to eql(1)
+        expect(queue.shift).to eql(0)
+      end
+
+      it 'should pop in back' do
+        expect(queue.pop).to eql(0)
+        expect(queue.pop).to eql(1)
       end
     end
   end

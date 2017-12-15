@@ -31,6 +31,16 @@ class WeightedQueue < PriorityQueue
     @items.last.value
   end
 
+  def shift
+    node = @items.shift
+    node.value
+  end
+
+  def pop
+    node = @items.pop
+    node.value
+  end
+
   def min_weight
     if @order == ASCENDING
       @items.first.weight
