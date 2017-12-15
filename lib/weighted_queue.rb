@@ -41,6 +41,15 @@ class WeightedQueue < PriorityQueue
     node.value
   end
 
+  def remove value
+    @items = @items.reject { |n| n.value == value }
+  end
+
+  def reweigh value
+    remove value
+    add value
+  end
+
   def min_weight
     if @order == ASCENDING
       @items.first.weight

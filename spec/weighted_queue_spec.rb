@@ -48,6 +48,20 @@ RSpec.describe(WeightedQueue) do
       expect(queue.min_weight).to eql(0)
     end
 
+    describe "when weight function could change" do
+      let(:values) { %w{a b c} }
+      let(:weight_lookup) { { 'a' => 1, 'b' => 2, 'c' => 3 } }
+      let(:weight_function) { -> (x) { weight_lookup[x] } }
+
+      it 'should insert in order and require reweigh to change order' do
+        expect(queue.items).to eql(%w{a b c})
+        weight_lookup['a'] = 100
+        expect(queue.items).to eql(%w{a b c})
+        queue.reweigh 'a'
+        expect(queue.items).to eql(%w{b c a})
+      end
+    end
+
     describe "when order is descending" do
       let(:order) { WeightedQueue::DESCENDING }
 
